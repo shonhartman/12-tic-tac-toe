@@ -82,18 +82,21 @@ while (idx != -1) {
   idx = array.indexOf(element, idx + 1);
 }
 
-if (xSquare == true) {
+if (state[0][0] === "" || state[0][1] === "" || state[0][2] === "") {
+  return true;
 
-  console.log("square is taken");
 }
 
-else if (oSquare == true) {
+else if (state[1][0] === "" || state[1][1] === "" || state[1][2] === "") {
+  return true;
+}
 
-  console.log("square is taken");
+else if (state[2][0] === "" || state[2][1] === "" || state[2][2] === "") {
+  return true;
 }
 
 else {
-  return true;
+  return false;
 }
   }
 
@@ -120,11 +123,30 @@ else {
 
 export function validateMove(state, move) {
   // YOUR CODE HERE
-  if (state === move) {
+  if (move.row == 1 || 2 || 3) {
+    return true;
+  }
+
+  else if (move.column == 1 || 2 || 3) {
     return true;
   }
 
   return false;
+
+  if (state[move.row -1][move.column -1] || [move.row -2][move.column -2] || [move.row -3][move.column -3]){
+    return true;
+  }
+
+  else if (state === "") {
+    return true;
+
+  }
+
+  else {
+
+    return false;
+
+  }
 }
 /**
  * We need a function to ask a user for their move.
@@ -159,11 +181,20 @@ export function validateMove(state, move) {
 
 function getPlayerMove(state, player) {
 	// DISPLAY CURRENT PLAYER NAME AND LETTER
-console.log(player.name(letter));
-  // ASK WHAT ROW THEY WANT
-var whatRow = readlineSync.question("What Row?");
-  // ASK WHAT COLUMN THEY WANT
-  var whatRow = readlineSync.question("Column?");
+
+
+
+var validMove;
+
+while(!validMove) {
+  console.log(player.name + "its your turn, to play an " + player.letter);
+    // ASK WHAT ROW THEY WANT
+  var whatRow = readlineSync.question("What Row?");
+    // ASK WHAT COLUMN THEY WANT
+    var whatColumn = readlineSync.question("Column?");
+}
+
+return validMove;
 
 }
 
@@ -196,34 +227,25 @@ var whatRow = readlineSync.question("What Row?");
 export function isGameWon(state) {
 
   // CHECK FOR HORIZONTAL WINS ON EACH ROW
-if ([0][0] && [0][1] && [0][2] || [0][1] && [1][2] && [2][2] ||
-    [0][2] && [1][3] && [2][3] === "O"){
-  console.log("O Wins");
-}
-
-  else if ([0][0] && [0][1] && [0][2] || [0][1] && [1][2] && [2][2] ||
-      [0][2] && [1][3] && [2][3] === "X") {
-        console.log("X Wins");
+if (state[0][0] !== " " && state[0][0] === state[0][1] && state[0][1] === state[0][2]) { return state[0][0]; }
 
   }
+
+  else if (state[1][0] !== " " && state[1][0] === state[1][1] && state[1][1] === state[1][2]) { return state[1][0];) {
+
+  }
+
+  else if (state[2][0] !== " " && state[2][0] === state[2][1] && state[2][1] === state[2][2]) { return state[1][0];) {
+
+  }
+
   // CHECK FOR VERTICAL WINS ON EACH COLUMN
-  if ([0][0] && [0][1] && [0][2] || [0][1] && [1][2] && [1][3] ||
-      [0][2] && [2][2] && [2][3] === "O"){
-    console.log("O Wins");
-  }
 
-    else if ([0][0] && [0][1] && [0][2] || [0][1] && [1][2] && [1][3] ||
-        [0][2] && [2][2] && [2][3] === "X"){
-      console.log("X Wins");
-    }
   // CHECK FOR DIAGONAL WINS
-  if ([0][0] && [1][2] && [2][3] || [0][2] && [1][2] && [0][2] === "O"){
-    console.log("O Wins");
-  }
+  if (state[0][0] !== " " && state[0][0] === state[1][1] && state[1][1] === state[2][2]) { return state[0][0]; }
 
-  else if ([0][0] && [1][2] && [2][3] || [0][2] && [1][2] && [0][2] === "X"){
-    console.log("X Wins");
-  }
+    }
+
 
 /**
  * Now that we've got our bases covered, we
@@ -273,29 +295,18 @@ console.log("Let's play some Tic-Tac-Toe!");
   var userNameP2 = readlineSync.question('What is your name Player 2? :');
   console.log('Hi ' + userName + '!');
 
-  Player1() {
+  var player1 = newPlayer(userNameP1, "x");
 
-    this.name = userNameP1;
-    this.letter = x;
+  var player2 = newPlayer(userNameP2, "o");
 
-  }
-
-  Player2() {
-
-    this.name = userNameP2;
-    this.letter = o;
-
-  }
 
 
   // CREATE INITIAL GAME STATE
-  var gameBoard = [
-    [' ', ' ', ' '],
-    [' ', ' ', ' '],
-    [' ', ' ', ' '],
-  ];
+  drawBoard(gameBoard);
 
   // WHILE LOOP FOR WHEN GAME IS NOT WON
+var gameOn = true;
+
 while (gameOn === true) {
 
     // DISPLAY BOARD
