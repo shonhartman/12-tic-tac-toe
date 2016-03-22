@@ -299,6 +299,8 @@ console.log("Let's play some Tic-Tac-Toe!");
 
   var player2 = newPlayer(userNameP2, "o");
 
+  var currentPlayer();
+
 
 
   // CREATE INITIAL GAME STATE
@@ -319,68 +321,38 @@ while (gameOn === true) {
       });
     }
     // GET MOVE FOR CURRENT PLAYER
-    function getPlayerMove(state, player) {
-    	// DISPLAY CURRENT PLAYER NAME AND LETTER
-    console.log(player.name(letter));
-      // ASK WHAT ROW THEY WANT
-    var whatRow = readlineSync.question("What Row?");
-      // ASK WHAT COLUMN THEY WANT
-      var whatRow = readlineSync.question("Column?");
+    var move = getPlayerMove(gameBoard, currentPlayer);
 
     }
     // UPDATE gameBoard with new move
-    if (state === move) {
-      return true;
-    }
 
-    return false;
-  }
+  gameBoard[move.row -1][move.column -1] = currentPlayer.letter;
     // CHECK FOR WIN CONDITION
-    if (gameBoard[0][0] && gameBoard[0][1] && gameBoard[0][2] || gameBoard[0][1] && gameBoard[1][2] && gameBoard[2][2] ||
-        gameBoard[0][2] && gameBoard[1][3] && gameBoard[2][3] === "O"){
-      console.log("O Wins");
-    }
 
-      else if (gameBoard[0][0] && gameBoard[0][1] && gameBoard[0][2] || gameBoard[0][1] && gameBoard[1][2] && gameBoard[2][2] ||
-          gameBoard[0][2] && gameBoard[1][3] && gameBoard[2][3] === "X") {
-            console.log("X Wins");
 
-      }
-      // CHECK FOR VERTICAL WINS ON EACH COLUMN
-      if (gameBoard[0][0] && gameBoard[0][1] && gameBoard[0][2] || gameBoard[0][1] && gameBoard[1][2] && gameBoard[1][3] ||
-          gameBoard[0][2] && gameBoard[2][2] && gameBoard[2][3] === "O"){
-        console.log("O Wins");
-      }
-
-        else if (gameBoard[0][0] && gameBoard[0][1] && gameBoard[0][2] || gameBoard[0][1] && gameBoard[1][2] && gameBoard[1][3] ||
-            gameBoard[0][2] && gameBoard[2][2] && gameBoard[2][3] === "X"){
-          console.log("X Wins");
-        }
-      // CHECK FOR DIAGONAL WINS
-      if (gameBoard[0][0] && gameBoard[1][2] && gameBoard[2][3] || gameBoard[0][2] && gameBoard[1][2] && gameBoard[0][2] === "O"){
-        console.log("O Wins");
-      }
-
-      else if (gameBoard[0][0] && gameBoard[1][2] && gameBoard[2][3] || gameBoard[0][2] && gameBoard[1][2] && gameBoard[0][2] === "X"){
-        console.log("X Wins");
-      }
-
-  }
     // CHECK FOR MOVES LEFT
-
+var tieGame = emptySpotsLeft(gameBoard);
     // UPDATE CURRENT PLAYER
-
-  // CONGRATULATE WINNER OR DECLARE IT A TIE
-
-  else if (gameOn === false) {
-    console.log("X Wins");
-
-  }
-
-  else console.log("O Wins");
+if currentPlayer === player1 {
+  currentPlayer = player2;
 }
 
+else currentPlayer = player1;
 
+  // CONGRATULATE WINNER OR DECLARE IT A TIE
+var isGameWon(gameBoard) = false;
+
+if (isGameWon == "x") {
+  console.log("x wins!");
+}
+
+else if (isGameWon == "o") {
+  console.log("o wins!");
+}
+
+else (gameOn == false) {
+  console.log("tie");
+}
 
 /**
  * Finally, we call our runGame function so that
