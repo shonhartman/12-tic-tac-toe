@@ -295,16 +295,18 @@ console.log("Let's play some Tic-Tac-Toe!");
   var userNameP2 = readlineSync.question('What is your name Player 2? :');
   console.log('Hi ' + userName + '!');
 
-  var player1 = newPlayer(userNameP1, "x");
+  var player1 = newPlayer(userNameP1, "X");
 
-  var player2 = newPlayer(userNameP2, "o");
+  var player2 = newPlayer(userNameP2, "O");
 
-  var currentPlayer();
+  var currentPlayer = player1;
 
 
 
   // CREATE INITIAL GAME STATE
   drawBoard(gameBoard);
+
+}
 
   // WHILE LOOP FOR WHEN GAME IS NOT WON
 var gameOn = true;
@@ -312,14 +314,7 @@ var gameOn = true;
 while (gameOn === true) {
 
     // DISPLAY BOARD
-    function drawBoard(state) {
-      console.log("    1   2   3");
 
-      state.forEach(function(row, index) {
-        console.log("  ~~~~~~~~~~~~~");
-        console.log((index + 1) + " | " + row.join(" | "));
-      });
-    }
     // GET MOVE FOR CURRENT PLAYER
     var move = getPlayerMove(gameBoard, currentPlayer);
 
@@ -333,20 +328,22 @@ while (gameOn === true) {
     // CHECK FOR MOVES LEFT
 var tieGame = emptySpotsLeft(gameBoard);
     // UPDATE CURRENT PLAYER
-if currentPlayer === player1 {
+if (currentPlayer === player1) {
   currentPlayer = player2;
 }
 
-else currentPlayer = player1;
+else {
+  currentPlayer = player1;
+}
 
   // CONGRATULATE WINNER OR DECLARE IT A TIE
-var isGameWon(gameBoard) = false;
+var won = isGameWon(gameBoard);
 
-if (isGameWon == "x") {
+if (won == "x") {
   console.log("x wins!");
 }
 
-else if (isGameWon == "o") {
+else if (won == "o") {
   console.log("o wins!");
 }
 
