@@ -70,35 +70,29 @@ function drawBoard(state) {
  */
 
 export function emptySpotsLeft(state) {
-	// YOUR CODE HERE
-var empty = [];
-var xSquare = ['X'];
-var oSquare = ['O'];
-var indices = [];
-var element = 'X' || 'O';
-var idx = array.indexOf(element);
-while (idx != -1) {
-  indices.push(idx);
-  idx = array.indexOf(element, idx + 1);
-}
+  // YOUR CODE HERE
+  // var empty = [];
+  // var xSquare = ['X'];
+  // var oSquare = ['O'];
+  // var indices = [];
+  // var element = 'X' || 'O';
+  // var idx = array.indexOf(element);
+  // while (idx != -1) {
+  //   indices.push(idx);
+  //   idx = array.indexOf(element, idx + 1);
+  // }
 
-if (state[0][0] === "" || state[0][1] === "" || state[0][2] === "") {
-  return true;
+  if (state[0][0] === " " || state[0][1] === " " || state[0][2] === " ") {
+    return true;
 
-}
-
-else if (state[1][0] === "" || state[1][1] === "" || state[1][2] === "") {
-  return true;
-}
-
-else if (state[2][0] === "" || state[2][1] === "" || state[2][2] === "") {
-  return true;
-}
-
-else {
-  return false;
-}
+  } else if (state[1][0] === " " || state[1][1] === " " || state[1][2] === " ") {
+    return true;
+  } else if (state[2][0] === " " || state[2][1] === " " || state[2][2] === " ") {
+    return true;
+  } else {
+    return false;
   }
+}
 
 
 /**
@@ -123,30 +117,18 @@ else {
 
 export function validateMove(state, move) {
   // YOUR CODE HERE
-  if (move.row == 1 || 2 || 3) {
-    return true;
+  if (move.row < 1 || move.row > 3) {
+    return false;
+  } else if (move.column < 1 || move.column > 3) {
+    return false;
   }
 
-  else if (move.column == 1 || 2 || 3) {
+  if (state[move.row - 1][move.column - 1] === " ") {
     return true;
   }
 
   return false;
 
-  if (state[move.row -1][move.column -1] || [move.row -2][move.column -2] || [move.row -3][move.column -3]){
-    return true;
-  }
-
-  else if (state === "") {
-    return true;
-
-  }
-
-  else {
-
-    return false;
-
-  }
 }
 /**
  * We need a function to ask a user for their move.
@@ -180,21 +162,21 @@ export function validateMove(state, move) {
  */
 
 function getPlayerMove(state, player) {
-	// DISPLAY CURRENT PLAYER NAME AND LETTER
+  // DISPLAY CURRENT PLAYER NAME AND LETTER
 
 
 
-var validMove;
+  var validMove;
 
-while(!validMove) {
-  console.log(player.name + "its your turn, to play an " + player.letter);
+  while (!validMove) {
+    console.log(player.name + "its your turn, to play an " + player.letter);
     // ASK WHAT ROW THEY WANT
-  var whatRow = readlineSync.question("What Row?");
+    var whatRow = readlineSync.question("What Row?");
     // ASK WHAT COLUMN THEY WANT
     var whatColumn = readlineSync.question("Column?");
-}
+  }
 
-return validMove;
+  return validMove;
 
 }
 
@@ -227,24 +209,22 @@ return validMove;
 export function isGameWon(state) {
 
   // CHECK FOR HORIZONTAL WINS ON EACH ROW
-if (state[0][0] !== " " && state[0][0] === state[0][1] && state[0][1] === state[0][2]) { return state[0][0]; }
-
-  }
-
-  else if (state[1][0] !== " " && state[1][0] === state[1][1] && state[1][1] === state[1][2]) { return state[1][0];) {
-
-  }
-
-  else if (state[2][0] !== " " && state[2][0] === state[2][1] && state[2][1] === state[2][2]) { return state[1][0];) {
-
+  if (state[0][0] !== " " && state[0][0] === state[0][1] && state[0][1] === state[0][2]) {
+    return state[0][0];
+  } else if (state[1][0] !== " " && state[1][0] === state[1][1] && state[1][1] === state[1][2]) {
+    return state[1][0];
+  } else if (state[2][0] !== " " && state[2][0] === state[2][1] && state[2][1] === state[2][2]) {
+    return state[2][0];
   }
 
   // CHECK FOR VERTICAL WINS ON EACH COLUMN
 
   // CHECK FOR DIAGONAL WINS
-  if (state[0][0] !== " " && state[0][0] === state[1][1] && state[1][1] === state[2][2]) { return state[0][0]; }
+  if (state[0][0] !== " " && state[0][0] === state[1][1] && state[1][1] === state[2][2]) {
+    return state[0][0];
+  }
 
-    }
+}
 
 
 /**
@@ -287,7 +267,7 @@ if (state[0][0] !== " " && state[0][0] === state[0][1] && state[0][1] === state[
 
 function runGame() {
   // DISPLAY WELCOME BANNER
-console.log("Let's play some Tic-Tac-Toe!");
+  console.log("Let's play some Tic-Tac-Toe!");
   // ASK FOR PLAYER NAMES AND CREATE PLAYERS
   var userNameP1 = readlineSync.question('What is your name Player 1? :');
   console.log('Hi ' + userName + '!');
@@ -301,58 +281,57 @@ console.log("Let's play some Tic-Tac-Toe!");
 
   var currentPlayer = player1;
 
-
+  var gameBoard = [
+    [' ', ' ', ' '],
+    [' ', ' ', ' '],
+    [' ', ' ', ' '],
+  ];
 
   // CREATE INITIAL GAME STATE
   drawBoard(gameBoard);
 
-}
-
   // WHILE LOOP FOR WHEN GAME IS NOT WON
-var gameOn = true;
+  var gameOn = true;
 
-while (gameOn === true) {
+  while (gameOn === true) {
 
     // DISPLAY BOARD
 
     // GET MOVE FOR CURRENT PLAYER
     var move = getPlayerMove(gameBoard, currentPlayer);
 
-    }
     // UPDATE gameBoard with new move
 
-  gameBoard[move.row -1][move.column -1] = currentPlayer.letter;
+    gameBoard[move.row - 1][move.column - 1] = currentPlayer.letter;
     // CHECK FOR WIN CONDITION
 
 
     // CHECK FOR MOVES LEFT
-var tieGame = emptySpotsLeft(gameBoard);
+    var tieGame = emptySpotsLeft(gameBoard);
     // UPDATE CURRENT PLAYER
-if (currentPlayer === player1) {
-  currentPlayer = player2;
-}
+    if (currentPlayer === player1) {
+      currentPlayer = player2;
+    } else {
+      currentPlayer = player1;
+    }
 
-else {
-  currentPlayer = player1;
-}
+    // CONGRATULATE WINNER OR DECLARE IT A TIE
+    var won = isGameWon(gameBoard);
 
-  // CONGRATULATE WINNER OR DECLARE IT A TIE
-var won = isGameWon(gameBoard);
+    if (won == "x") {
+      console.log("x wins!");
+    } else if (won == "o") {
+      console.log("o wins!");
+    } else {
+      console.log("tie");
+    }
 
-if (won == "x") {
-  console.log("x wins!");
-}
+  }
 
-else if (won == "o") {
-  console.log("o wins!");
-}
-
-else (gameOn == false) {
-  console.log("tie");
 }
 
 /**
  * Finally, we call our runGame function so that
  * the game actually starts.
  */
- runGame();
+// runGame();
