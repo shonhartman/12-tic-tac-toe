@@ -166,7 +166,8 @@ function getPlayerMove(state, player) {
 
 
 
-  var validMove;
+  var validMove = false;
+  var move = {};
 
   while (!validMove) {
     console.log(player.name + "its your turn, to play an " + player.letter);
@@ -174,9 +175,17 @@ function getPlayerMove(state, player) {
     var whatRow = readlineSync.question("What Row?");
     // ASK WHAT COLUMN THEY WANT
     var whatColumn = readlineSync.question("Column?");
+
+    move = {
+      row: Number(whatRow),
+      column: Number(whatColumn)
+    };
+
+    validMove = validateMove(state, move);
+
   }
 
-  return validMove;
+  return move;
 
 }
 
@@ -218,12 +227,24 @@ export function isGameWon(state) {
   }
 
   // CHECK FOR VERTICAL WINS ON EACH COLUMN
+  if (state[0][0] !== " " && state[0][0] === state[1][0] && state[1][0] === state[2][0]) {
+    return state[0][0];
+  } else if (state[0][1] !== " " && state[0][1] === state[1][1] && state[1][1] === state[2][1]) {
+    return state[0][1];
+  } else if (state[0][2] !== " " && state[0][2] === state[1][2] && state[1][2] === state[2][2]) {
+    return state[0][2];
+  }
 
   // CHECK FOR DIAGONAL WINS
   if (state[0][0] !== " " && state[0][0] === state[1][1] && state[1][1] === state[2][2]) {
     return state[0][0];
   }
 
+  else if (state[2][0] !== " " && state[2][0] === state[1][1] && state[1][1] === state[0][2]) {
+    return state[2][0];
+  }
+
+  return false;
 }
 
 
@@ -270,14 +291,14 @@ function runGame() {
   console.log("Let's play some Tic-Tac-Toe!");
   // ASK FOR PLAYER NAMES AND CREATE PLAYERS
   var userNameP1 = readlineSync.question('What is your name Player 1? :');
-  console.log('Hi ' + userName + '!');
+  // console.log('Hi ' + userName + '!');
 
   var userNameP2 = readlineSync.question('What is your name Player 2? :');
-  console.log('Hi ' + userName + '!');
+  // console.log('Hi ' + userName + '!');
 
-  var player1 = newPlayer(userNameP1, "X");
+  var player1 = new Player(userNameP1, "X");
 
-  var player2 = newPlayer(userNameP2, "O");
+  var player2 = new Player(userNameP2, "O");
 
   var currentPlayer = player1;
 
@@ -288,7 +309,6 @@ function runGame() {
   ];
 
   // CREATE INITIAL GAME STATE
-  drawBoard(gameBoard);
 
   // WHILE LOOP FOR WHEN GAME IS NOT WON
   var gameOn = true;
@@ -296,6 +316,7 @@ function runGame() {
   while (gameOn === true) {
 
     // DISPLAY BOARD
+    drawBoard(gameBoard);
 
     // GET MOVE FOR CURRENT PLAYER
     var move = getPlayerMove(gameBoard, currentPlayer);
@@ -308,22 +329,32 @@ function runGame() {
 
     // CHECK FOR MOVES LEFT
     var tieGame = emptySpotsLeft(gameBoard);
+
+    // CONGRATULATE WINNER OR DECLARE IT A TIE
+    var won = isGameWon(gameBoard);
+
+    if (won !== false) {
+      console.log(`Congratulations ${won}`);
+      gameOn = false;
+    }
+    else if (tieGame === false) {
+      console.log(`Tie game!`)
+      gameOn = false;
+    }
+
+    // if (won == "x") {
+    //   console.log("x wins!");
+    // } else if (won == "o") {
+    //   console.log("o wins!");
+    // } else {
+    //   console.log("tie");
+    // }
+
     // UPDATE CURRENT PLAYER
     if (currentPlayer === player1) {
       currentPlayer = player2;
     } else {
       currentPlayer = player1;
-    }
-
-    // CONGRATULATE WINNER OR DECLARE IT A TIE
-    var won = isGameWon(gameBoard);
-
-    if (won == "x") {
-      console.log("x wins!");
-    } else if (won == "o") {
-      console.log("o wins!");
-    } else {
-      console.log("tie");
     }
 
   }
@@ -334,4 +365,4 @@ function runGame() {
  * Finally, we call our runGame function so that
  * the game actually starts.
  */
-// runGame();
+runGame();
